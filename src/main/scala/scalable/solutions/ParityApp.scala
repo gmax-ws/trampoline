@@ -11,13 +11,13 @@ sealed trait Parity[F[_]] {
 object NotOptimized extends Parity[Id] {
   def even[A](ns: List[A]): Id[Boolean] =
     ns match {
-      case Nil => true
+      case Nil     => true
       case x :: xs => odd(xs)
     }
 
   def odd[A](ns: List[A]): Id[Boolean] =
     ns match {
-      case Nil => false
+      case Nil     => false
       case x :: xs => even(xs)
     }
 }
@@ -25,13 +25,13 @@ object NotOptimized extends Parity[Id] {
 object Optimized extends Parity[Trampoline] {
   def even[A](ns: List[A]): Trampoline[Boolean] =
     ns match {
-      case Nil => Done(true)
+      case Nil     => Done(true)
       case x :: xs => More(() => odd(xs))
     }
 
   def odd[A](ns: List[A]): Trampoline[Boolean] =
     ns match {
-      case Nil => Done(false)
+      case Nil     => Done(false)
       case x :: xs => More(() => even(xs))
     }
 }
